@@ -37,7 +37,7 @@ export default function Signup() {
         password,
       });
 
-      if (res.error?.message) {
+      if (res.error) {
         setError(res.error.message ?? "Failed to sign up");
       } else {
         router.push("/");

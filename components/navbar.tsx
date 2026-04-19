@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation";
 
 export default  function Navbar() {
 
-    const session =  useSession()
-
+    const { data  } =  useSession()
+    
     const router = useRouter()
 
     return <nav className="sticky top-0 flex items-center  justify-between px-3.5 py-4">
@@ -26,12 +26,12 @@ export default  function Navbar() {
                 Dashboard
             </Link>
 
-            {session?.data?.user ? (
+            {data?.user ? (
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                             <Avatar>
                                 <AvatarFallback className="text-black">
-                                   {session?.data.user?.name[0].toUpperCase()} 
+                                   {data.user?.name[0].toUpperCase()} 
                                 </AvatarFallback>
                             </Avatar>
                     </DropdownMenuTrigger>
@@ -39,8 +39,8 @@ export default  function Navbar() {
                         <DropdownMenuGroup>
                             <DropdownMenuLabel>
                                 <div>
-                                    <p>{session?.data?.user?.email}</p>
-                                    <p>{session?.data?.user?.name}</p>
+                                    <p>{data?.user?.email}</p>
+                                    <p>{data?.user?.name}</p>
 
                                 </div>
                             </DropdownMenuLabel>  
