@@ -55,12 +55,12 @@ export default function ActiveTabs (){
         </div>
 
 
-      <div className="border rounded-md shadow-xl max-w-3xl h-120  w-full overflow-hidden" >
+      <div className="border rounded-md shadow-xl  h-120  w-full overflow-hidden" >
   
         <Image 
         src={currentTab.image}
-        width={768}
-        height={120}
+        width={1200}
+        height={800}
         alt={currentTab.title}
         />
 

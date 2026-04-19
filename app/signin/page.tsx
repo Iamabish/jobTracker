@@ -11,13 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { signUp } from "@/lib/auth/authClient";
+import { signIn } from "@/lib/auth/authClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function Signup() {
+export default function Signin() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,11 +32,15 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const res = await signUp.email({
-        name,
-        email,
-        password,
-      });
+        
+        console.log('at signin');
+        
+
+        const res = await signIn.email({
+            email,
+            password,
+            callbackURL : "/"
+        })
 
       if (res.error?.message) {
         setError(res.error.message ?? "Failed to sign up");
@@ -55,12 +60,9 @@ export default function Signup() {
         <form onSubmit={handleSubmit}>
           <CardHeader className="space-y-1 pb-2">
             <CardTitle className="text-2xl font-semibold">
-              Sign up
+              Sign in
             </CardTitle>
 
-            <p className="text-sm text-muted-foreground">
-              Create an account to start tracking your job applications
-            </p>
           </CardHeader>
 
           <CardContent>
@@ -70,16 +72,7 @@ export default function Signup() {
               </div>
             )}
 
-            <div className="space-y-2 mb-3">
-              <Label>Name</Label>
-              <Input
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                required
-                placeholder="John Doe"
-                className="rounded-md py-4"
-              />
-            </div>
+            
 
             <div className="space-y-2 mb-3">
               <Label>Email</Label>
@@ -113,16 +106,16 @@ export default function Signup() {
               className="w-full bg-primary hover:bg-primary/90"
               disabled={loading}
             >
-              {loading ? "Creating account..." : "Sign Up"}
+              {loading ? "Creating account..." : "Sign In"}
             </Button>
 
             <p className="text-center text-sm text-gray-600">
-              Already have an account?{" "}
+              Do not  have an account?{" "}
               <Link
-                href="/signin"
+                href="/signup"
                 className="font-medium text-primary hover:underline"
               >
-                Sign in
+                Sign up
               </Link>
             </p>
           </CardFooter>

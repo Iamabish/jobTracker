@@ -1,4 +1,8 @@
-import { ArrowRight, ArrowUpRight, Briefcase, Clock, LucideIcon, LucideProps } from "lucide-react";
+import ActiveTabs from "@/components/activeTabs";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, ArrowUpRight, Briefcase, Clock, LucideIcon, LucideProps, TrendingUp } from "lucide-react";
+import Link from "next/link";
+
 
 interface Itestimonials {
   icon : LucideIcon,
@@ -15,7 +19,7 @@ const testimonials : Itestimonials[] = [
 
   
   {
-    icon : ArrowUpRight,
+    icon : TrendingUp,
     title : "Track Progress",
     descrtiptiom : 'Monitor your application status from applied to interview to offer with visual Kanban boards.'
   },
@@ -30,53 +34,70 @@ const testimonials : Itestimonials[] = [
 
 
 export default function Home() {
-  return <div className="flex min-h-screen items-center justify-center  flex-col bg-white text-black "> 
+  return <div className="flex min-h-screen items-center justify-center    flex-col bg-white text-black "> 
 
     <main>
       <section className="container mx-auto py-24 text-center">
+
         <h1 className="text-2xl md:text-6xl max-w-4xl mx-auto font-bold mb-7">
           A better way to track your job application.
         </h1>
 
-        <p className="text-xl mb-10 font-semibold text-gray-300 max-w-2xl mx-auto">
+        <p className="text-xl mb-10 font-semibold text-muted-foreground max-w-2xl mx-auto">
           Capture, organize, and manage your job search in one place.
         </p>
 
-        <button className="px-4 py-2.5 text-xl font-light bg-pink-400 text-white rounded-lg mx-auto flex items-center gap-3 mb-4 cursor-pointer">
-          Start for free
-          <ArrowRight className="hover:translate-x-1.5 transition-all ease-in" />
-        </button>
 
-        <span className="text-gray-300 font-medium block">
+        <Link href={'/signup'}>
+          <Button size={"lg"}   className=" py-5 h-12 px-8  text-xl font-light bg-pink-400 text-white rounded-lg mx-auto flex items-center gap-3 mb-4 cursor-pointer group">
+            Start for free
+            <ArrowRight className="transition-all ease-in group-hover:translate-x-1.5" />
+          </Button>
+        </Link>
+
+        <span className="text-muted-foreground font-medium block">
           Free forever. No credit card required.
         </span>
       </section>
+
+
+      <section className="border py-20 px-3 flex-col gap-10   rounded-md w-full flex items-center justify-center mb-10">
+
+        <ActiveTabs />
   
-  <div className="flex gap-3">
+      </section>
+  
 
-    {
-      testimonials.map((item, index) => {
-        const Icon = item.icon
+      <section className="border py-20 px-3 flex-col gap-10   rounded-md w-full  flex items-center justify-center mb-10">
 
-        return (
-          <div className="flex flex-col gap-5 max-w-lg p-2 md:p-4  shadow-lg" key={index} >
-            <span className="p-2 bg-pink-100 rounded-xl  w-fit">
-              <Icon className="w-5 h-5 text-pink-500" />
-            </span>
+          <div className="flex gap-3 items-center justify-between">
 
-            <h5 className="text-2xl  font-semibold">
-              {item.title}
-            </h5>
+          {
+            testimonials.map((item, index) => {
+              const Icon = item.icon
 
-            <p className="text-gray-500">
-              {item.descrtiptiom}
-            </p>
-          </div>
-        )
-      })
-    }
+              return (
+                <div className="flex flex-col gap-5 max-w-lg p-2 md:p-4  shadow-lg" key={index} >
+                  <span className="p-2 bg-pink-100 rounded-xl  w-fit">
+                    <Icon className="w-5 h-5 text-pink-500" />
+                  </span>
 
-  </div>
+                  <h5 className="text-2xl  font-semibold">
+                    {item.title}
+                  </h5>
+
+                  <p className="text-gray-500">
+                    {item.descrtiptiom}
+                  </p>
+                </div>
+              )
+            })
+          }
+
+        </div>
+
+      </section>
+  
 
       
 
