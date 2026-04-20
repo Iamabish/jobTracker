@@ -2,9 +2,8 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import initBoard from "../initUserBoard";
-
+import { redirect } from "next/navigation";
 const client = new MongoClient(process.env.MONGO_URL!)
 const db = client.db()
 
