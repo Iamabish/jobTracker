@@ -1,34 +1,21 @@
 import connectDB from "./db"
 import { Board, Column } from "./models"
 
-const DEFAULT_COL = [
-    {
-        name : 'Wishlist',
-        order : 0
-    },
-    {
-        name : 'Appplied',
-        order : 1
-    },
-
-    {
-        name : 'Inrterviewing',
-        order : 2
-    },
-
-    {
-        name : 'Offer',
-        order : 3
-    },
-
-    {
-        name : 'Rejected',
-        order : 4
-    },
-]
+const DEFAULT_COLUMNS = [
+  {
+    name: "Wish List",
+    order: 0,
+  },
+  { name: "Applied", order: 1 },
+  { name: "Interviewing", order: 2 },
+  { name: "Offer", order: 3 },
+  { name: "Rejected", order: 4 },
+];
 
 
-export default async function initBoard(userId : string) {
+export  async function initBoard(userId : string) {
+
+
 
     await connectDB()
 
@@ -51,7 +38,7 @@ export default async function initBoard(userId : string) {
        })
 
        const column = Promise.all(
-            DEFAULT_COL.map((col) => 
+            DEFAULT_COLUMNS.map((col) => 
                 Column.create({
                     name : col.name,
                     order : col.order,
@@ -61,6 +48,9 @@ export default async function initBoard(userId : string) {
                 })
             )
        )
+
+       console.log('intializing the columns');
+       
 
        board.columns = (await column).map((col) => col._id)
        await board.save()

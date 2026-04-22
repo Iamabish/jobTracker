@@ -22,7 +22,7 @@ interface CreateJobApplicationProps {
   boardId: string;
 }
 
-const INTIAL_FORM_DATA = {
+const INITIAL_FORM_DATA = {
     company: "",
     position: "",
     location: "",
@@ -37,12 +37,11 @@ export default function CreateJobApplication({
   columnId,
   boardId,
 }: CreateJobApplicationProps) {
-  const [formData, setFormData] = useState(INTIAL_FORM_DATA);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
   const[open, setOpen] = useState(false)
 
   const route = useRouter()
-
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -73,10 +72,12 @@ export default function CreateJobApplication({
         .map((item) => item.trim())
         .filter((item) => item.length > 0)
     })
-    
+
 
     if(!data.error) {
-        setFormData(INTIAL_FORM_DATA)
+        console.log('data', data.data);
+        
+        setFormData(INITIAL_FORM_DATA)
         setOpen(false)
     }else {
         console.log('error', data.error);
@@ -101,7 +102,6 @@ export default function CreateJobApplication({
         </DialogHeader>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Row 1 */}
           <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
               <Label htmlFor="company">Company</Label>
@@ -128,7 +128,6 @@ export default function CreateJobApplication({
             </div>
           </div>
 
-          {/* Row 2 */}
           <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
               <Label htmlFor="location">Location</Label>
@@ -156,7 +155,6 @@ export default function CreateJobApplication({
             </div>
           </div>
 
-          {/* Full width fields */}
           <div className="space-y-2">
             <Label htmlFor="jobUrl">Job URL</Label>
             <Input

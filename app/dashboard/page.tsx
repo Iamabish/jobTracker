@@ -1,27 +1,45 @@
 import { getSession } from "@/lib/auth/auth"
 import connectDB from "@/lib/db";
 import { Board } from "@/lib/models";
-import { Db } from "mongodb";
-import { connect } from "mongoose";
 import KanBanBoard from "@/components/kanBanBoard";
+import { Suspense } from "react";
 
-export default async function DashBoard() {
+async function getBoard(userId : string) {
 
-    const session = await getSession()
-    console.log('this is session');
-    
+    "use cache"
 
     await connectDB()
 
-    const board = await Board.findOne({
-        userId : session?.user?.id, 
+    const boardDoc = await Board.findOne({
+        userId : userId, 
         name : "Job Hunt"
-    }).populate('columns')
+    }).populate({
+        path : 'columns',
+        populate: {
+        path: "jobs",
+    },
+    })
 
-    console.log('board', board);
+    if(!boardDoc) return null
+
+    const board = JSON.parse(JSON.stringify(boardDoc))
+
+    return board;
+}
+
+
+async function DashBoardPage() {
+   
+    const session = await getSession()
+    console.log('this is session');
+    
+    const board = await getBoard(session?.user.id ?? "")
+
+    console.log(JSON.stringify(board, null, 2));
     
 
-    return <div className="min-h-screen">
+    return <>
+        <div className="min-h-screen">
             <div className="container mx-auto p-6">
 
                 <div className="p-6">
@@ -30,9 +48,19 @@ export default async function DashBoard() {
                     <p>Track your Job Application</p>
                 </div>
 
-                <KanBanBoard board={JSON.parse(JSON.stringify(board))} userId={session?.user.id}/>
+                <KanBanBoard board={board} userId={session?.user.id}/>
 
             </div>
-    </div>
+        </div>
+    </>
+}
+
+export default async function DashBoard() {
+
+    
+
+    return <Suspense fallback={<p>Loading..</p>}>
+        <DashBoardPage  />
+    </Suspense>    
 
 }

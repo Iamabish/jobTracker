@@ -5,7 +5,7 @@ interface IColumn extends Document{
     userId : string,
     board : mongoose.Types.ObjectId,
     order : number,
-    jobs : mongoose.Types.ObjectId,
+    jobs: mongoose.Types.ObjectId,
 }
 
 const ColumnSchema = new Schema<IColumn>({
@@ -35,7 +35,7 @@ const ColumnSchema = new Schema<IColumn>({
     jobs : [
         {
             type : mongoose.Types.ObjectId,
-            ref : 'Job'
+            ref : 'JobApplication'
         }
     ]
 }, {timestamps : true})
