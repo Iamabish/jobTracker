@@ -2,14 +2,12 @@
 
 import { Button } from "./ui/button";
 import Image from "next/image";
-
 import { useState } from "react"
 
 enum TAB {
     ORGANIZE = "ORGANIZE",
     HIRED = "HIRED",
     MANAGE = "MANAGE",
-
 }
 
 const tabContent = {

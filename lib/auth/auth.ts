@@ -11,7 +11,7 @@ const client = mongooseInstance.connection.getClient();
 
 const db = client.db();
 
-export const auth = betterAuth({
+export const  auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
@@ -38,6 +38,10 @@ export const auth = betterAuth({
 });
 
 export async function getSession() {
+
+    console.log('get sesstion running ');
+    
+
   const result = await auth.api.getSession({
     headers: await headers(),
   });

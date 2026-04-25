@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "./ui/button";
 import CreateJobApplication from "./createJobApplication";
 import JobApplicationCard from "./jobApplicationCard";
+import useBoard from "../lib/hooks/useBoard"
 
 interface KanBanBoardProps {
     board : Board
@@ -46,15 +47,17 @@ function DropableColumn({column, config, boardId, sortedColumns} : {
     column : Column,
     config : ColConfig, 
     boardId : string, 
-    sortedColumns : Column[]
+    sortedColumns : Column[] | null
 } ) {
     
     //col info with job application
     //sorting jobs in which they are appearing
-    const sortedJobs = column.jobs.sort((a,b)=> a.order - b.order) || []
+    const sortedJobs = [...column.jobs].sort((a,b)=>a.order-b.order);
 
+    console.log('stuck at dropable column');
+    
 
-    return <Card className="min-w-[300px] flex-shrink-0 shadow-md p-0">
+    return <Card className="min-w-[300px] flex-shrink-0 shadow-md p-2 mb-3">
         <CardHeader className={`${config.color} text-white rounded-t-lg pb-3 pt-3`} >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -63,14 +66,12 @@ function DropableColumn({column, config, boardId, sortedColumns} : {
                 </div>
 
                 <DropdownMenu>
-                    <DropdownMenuTrigger >
-                        <Button variant="ghost" className="w-6 h-6 text-white hover:bg-white/20 ">
-                            <MoreVertical className="h-4 w-4"/>
-                        </Button>
+                    <DropdownMenuTrigger className="inline-flex items-center justify-center w-6 h-6 text-white hover:bg-white/20 rounded cursor-pointer">
+                        <MoreVertical className="h-4 w-4"/>
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
-                        <DropdownMenuItem className="text-destructive ">
+                        <DropdownMenuItem className="text-destructive">
                             <Trash2 className="mr-2 h-4 w-6"/>
                             Delete Column
                         </DropdownMenuItem>
@@ -94,11 +95,14 @@ function DropableColumn({column, config, boardId, sortedColumns} : {
 }
 
 
-function SortableJobCard({job, columns} : {job : JobApplication; columns : Column[]}) {
+function SortableJobCard({job, columns} : {job : JobApplication; columns : Column[] | null}) {
 
     //showign the info of the job
 
     //handle sorting, drag and droping
+
+    console.log('stuck at sortable job card function ');
+    
 
    return <div>
     <JobApplicationCard job={job} columns={columns}/>
@@ -109,13 +113,13 @@ function SortableJobCard({job, columns} : {job : JobApplication; columns : Colum
 
 export default function KanBanBoard({board, userId} : KanBanBoardProps) {
 
-    const column = board.columns
+    const {column } = useBoard(board)
 
-    console.log('normal columns', column);
-    
-    console.log('jobs',column[0].jobs);
+    console.log('stuck at kann ban board');
+        
+    // console.log('jobs',column && column[0].jobs);
 
-    const sortedColumns = column.sort((a,b) => a.order - b.order)
+    const sortedColumns = column ? [...column].sort((a,b)=>a.order-b.order) : [];
 
     
     
@@ -123,7 +127,7 @@ export default function KanBanBoard({board, userId} : KanBanBoardProps) {
         <>
             <div>
                 <div>
-                    {column.map((col, key) => {
+                    {column && column.map((col, key) => {
 
                         const config = COLUMN_CONFIG[key] || {
                             color: "bg-cyan-500",

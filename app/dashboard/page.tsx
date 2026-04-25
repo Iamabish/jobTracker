@@ -3,12 +3,15 @@ import connectDB from "@/lib/db";
 import { Board } from "@/lib/models";
 import KanBanBoard from "@/components/kanBanBoard";
 import { Suspense } from "react";
+import { log } from "node:console";
 
 async function getBoard(userId : string) {
 
     "use cache"
 
     await connectDB()
+
+    log('stuck at get board')
 
     const boardDoc = await Board.findOne({
         userId : userId, 
@@ -31,12 +34,11 @@ async function getBoard(userId : string) {
 async function DashBoardPage() {
    
     const session = await getSession()
-    console.log('this is session');
     
     const board = await getBoard(session?.user.id ?? "")
 
-    console.log(JSON.stringify(board, null, 2));
-    
+    console.log('at dashboard page ');
+        
 
     return <>
         <div className="min-h-screen">

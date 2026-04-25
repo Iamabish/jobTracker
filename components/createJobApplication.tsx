@@ -15,7 +15,6 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import createJobApplication from "@/lib/actions/jobApplication";
-import { useRouter } from "next/navigation";
 
 interface CreateJobApplicationProps {
   columnId: string;
@@ -41,7 +40,6 @@ export default function CreateJobApplication({
 
   const[open, setOpen] = useState(false)
 
-  const route = useRouter()
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -87,12 +85,10 @@ export default function CreateJobApplication({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Job
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger className="inline-flex items-center justify-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium shadow-xs hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors">
+      <Plus className="h-4 w-4" />
+      Add Job
+    </DialogTrigger>
 
       <DialogContent className="sm:max-w-xl p-6">
         <DialogHeader className="mb-4">
@@ -187,7 +183,6 @@ export default function CreateJobApplication({
               placeholder="Enter description of the role..."
               value={formData.description}
               onChange={handleChange}
-              required
             />
           </div>
 
@@ -198,7 +193,6 @@ export default function CreateJobApplication({
               name="notes"
               value={formData.notes}
               onChange={handleChange}
-              required
             />
           </div>
 
