@@ -306,3 +306,34 @@ export async function deleteJobAppication(jobId : string) {
     return { success : true }
 
 }
+
+export async function  deleteColumn(columnId : string) {
+
+    const session = await getSession()
+
+    if(!session?.user) {
+        return { error : "Unauthorized" }
+    }
+
+    const isColumn = await Column.findById(columnId)
+
+    if(!isColumn) {
+        return { error : 'Invalid Column id' }
+    }
+
+    if(isColumn.userId !== session.user.id) {
+        return { error : "Unauthorized" }  
+    }
+
+    await JobApplication.deleteMany({ columnId })
+    await Column.findByIdAndDelete(columnId)
+
+    await Board.findByIdAndUpdate(isColumn.boardId, {
+        $pull: { columns: columnId }
+    })
+
+    revalidatePath('/dashboard')
+
+    return { success : true }
+    
+}

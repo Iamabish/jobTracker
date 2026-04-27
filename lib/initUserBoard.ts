@@ -15,17 +15,18 @@ const DEFAULT_COLUMNS = [
 
 export  async function initBoard(userId : string) {
 
-
-
-    await connectDB()
-
-    console.log('at iniit board')
-    console.log('this is user id', userId);
-    ;
-    
-
     try {
+
+          await connectDB()
+
+            console.log('at iniit board')
+            console.log('this is user id', userId);
+            ;
+
        const isBoardExist = await Board.findOne({userId, name : "Job Hunt"})
+
+        console.log('existingboard', isBoardExist);
+
 
        if(isBoardExist) {
         return isBoardExist
@@ -37,7 +38,7 @@ export  async function initBoard(userId : string) {
             columns : []
        })
 
-       const column = Promise.all(
+       const column = await Promise.all(
             DEFAULT_COLUMNS.map((col) => 
                 Column.create({
                     name : col.name,
@@ -52,8 +53,10 @@ export  async function initBoard(userId : string) {
        console.log('intializing the columns');
        
 
-       board.columns = (await column).map((col) => col._id)
+       board.columns =  column.map((col) => col._id)
        await board.save()
+
+       return board
 
     }catch(err : any) {
         throw err;
